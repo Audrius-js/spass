@@ -71,6 +71,10 @@
     margin: 0 1em;
     user-select: none;
   }
+  .text-button.active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
   .prologue {
     position: absolute;
     top: 0;
@@ -113,7 +117,7 @@
         <input id="message" class="input-text" type="password">
       </div>
       <div class="input-container">
-        <label for="password" class="input-label">4) Your password:</label><span id="passwordL" class="input-length" hidden></span><u id="copyBtn" class="text-button" title="Copy to clipboard" hidden>copy</u><u id="ABC123Btn" class="text-button" title="Letters and numbers only" hidden>abc123</u><br>
+        <label for="password" class="input-label">4) Your password:</label><span id="passwordL" class="input-length" hidden></span><u id="copyBtn" class="text-button" title="Copy to clipboard" hidden>copy</u><u id="ABC123Btn" class="text-button" title="Letters and numbers only" hidden>abc123</u><u id="noSpacesBtn" class="text-button" title="Remove spaces" hidden>no spaces</u><u id="btn30" class="text-button" title="Truncate to 30 symbols" hidden>30</u><u id="btn20" class="text-button" title="Truncate to 20 symbols" hidden>20</u><br>
         <input id="password" class="input-text" type="password">
       </div>
     </div>
@@ -177,6 +181,30 @@ async function generatePassword(e) {
       password = password.match(/.{7}/g).map(sevenBits => parseInt(sevenBits, 2)); //Split binary string into array of groups of 7 bits and convert each array element to integer [0..127]. Note: the last 4 bits of the 256 bits hash are dropped, but since each integer will be encoded with 8 bits, not 7, the password will be 288 bits long.
       password = password.map(x => (x < 32) ? x + 32 : (x == 127) ? 126 : x); //Convert code points of non-printable ASCII characters (0..31 and 127) to printable (for 0..31 add 32, 127 replace with 126). Note: addition of 32 is irreversible, therefore the hash of the message cannot be retrevied from the password without guessing.
       password = password.map(c => String.fromCharCode(c)).join(''); //Convert integers to ASCII characters. Note: since there is some manipulation with the message hash bits (grouping into 7 bits (not 8), the last 4 bits are dropped, changed value if 7 bits < 32 or == 127) the hash of the password is not the same as the hash of the hash of the message.
+      
+      // Apply "abc123" alphanumeric transformation if active[cite: 13]
+      if (document.getElementById('ABC123Btn').classList.contains('active')) {
+        password = password
+          .split('')
+          .map(c => c.charCodeAt())
+          .map(x => { while ((x < 48) || (x > 122) || ((x > 57) && (x < 65)) || ((x > 90) && (x < 97))) x = (x > 122) ? x - 20 : x + 20; return x; })
+          .map(c => String.fromCharCode(c)).join('');
+      }
+
+      // Apply "no spaces" transformation if active[cite: 13]
+      if (document.getElementById('noSpacesBtn').classList.contains('active')) {
+        password = password.replace(/ /g, '');
+      }
+
+      // Apply length truncations (20 or 30 symbols) if active[cite: 13]
+      const maxLen = 36;
+      let targetLen = maxLen;
+      if (document.getElementById('btn20').classList.contains('active')) targetLen = 20;
+      if (document.getElementById('btn30').classList.contains('active')) targetLen = 30;
+      if (targetLen < maxLen) {
+        password = password.substring(0, targetLen);
+      }
+
       passwordInput.value = password; //Display the password
       document.getElementById('passwordL').innerText = password.length; //Display the length of the password
       document.querySelectorAll('.text-button').forEach(btn => btn.removeAttribute('hidden')); //Show the buttons
@@ -258,14 +286,37 @@ function setValues() {
   }); //onclick="if (passwordInput.value) navigator.clipboard.writeText(passwordInput.value)"
 
   document.querySelector('#ABC123Btn').addEventListener('click', () => {
-    if (passwordInput.value) { //If password is not empty
-      passwordInput.value = passwordInput.value
-      .split('') //Split into array of symbols
-      .map(c => c.charCodeAt()) //Convert symbols to numbers
-      .map(x => { while ((x < 48) || (x > 122) || ((x > 57) && (x < 65)) || ((x > 90) && (x < 97))) x = (x > 122) ? x - 20 : x + 20; return x; }) //Force numbers to fall into range of 0-9, A-Z or a-z codes
-      .map(c => String.fromCharCode(c)).join(''); //Convert numbers to symbols
-      if (!document.activeElement.classList.contains('input-text')) passwordInput.focus(); //If no input element has focus then set focus to password to see the change
-    }
+    const btn = document.getElementById('ABC123Btn');
+    btn.classList.toggle('active');
+    phraseInput.dispatchEvent(new Event('input'));
+    if (!document.activeElement.classList.contains('input-text')) passwordInput.focus();
+  });
+
+  document.querySelector('#noSpacesBtn').addEventListener('click', () => {
+    const btn = document.getElementById('noSpacesBtn');
+    btn.classList.toggle('active');
+    phraseInput.dispatchEvent(new Event('input'));
+    if (!document.activeElement.classList.contains('input-text')) passwordInput.focus();
+  });
+
+  document.querySelector('#btn20').addEventListener('click', () => {
+    const btn20 = document.getElementById('btn20');
+    const btn30 = document.getElementById('btn30');
+    const willBeActive = !btn20.classList.contains('active');
+    btn20.classList.toggle('active', willBeActive);
+    if (willBeActive) btn30.classList.remove('active');
+    phraseInput.dispatchEvent(new Event('input'));
+    if (!document.activeElement.classList.contains('input-text')) passwordInput.focus();
+  });
+
+  document.querySelector('#btn30').addEventListener('click', () => {
+    const btn20 = document.getElementById('btn20');
+    const btn30 = document.getElementById('btn30');
+    const willBeActive = !btn30.classList.contains('active');
+    btn30.classList.toggle('active', willBeActive);
+    if (willBeActive) btn20.classList.remove('active');
+    phraseInput.dispatchEvent(new Event('input'));
+    if (!document.activeElement.classList.contains('input-text')) passwordInput.focus();
   });
 
   document.querySelector('#repBtn').addEventListener('click', () => {
@@ -281,7 +332,7 @@ function setValues() {
   });
 
   phraseInput.focus(); //Note: autofocus not always invokes 'focus' event on page load
-  if (!mobileDevice) {
+if (!mobileDevice) {
 		const revLink = document.getElementById('rev-link');
 		const revImg = document.getElementById('rev-img');
 		
