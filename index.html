@@ -281,6 +281,30 @@ function setValues() {
   });
 
   phraseInput.focus(); //Note: autofocus not always invokes 'focus' event on page load
+  if (!mobileDevice) {
+		const revLink = document.getElementById('rev-link');
+		const revImg = document.getElementById('rev-img');
+		
+		if (revLink && revImg) {
+			revLink.addEventListener('mouseenter', function(e) {
+			  // Position the image near the link
+			  const rect = revLink.getBoundingClientRect();
+			  revImg.style.left = rect.left + window.scrollX + 'px';
+			  revImg.style.top = rect.top + window.scrollY - 200 + 'px';
+			  revImg.style.display = 'block';
+			});
+
+			revLink.addEventListener('mouseleave', function() {
+			  revImg.style.display = 'none';
+			});
+			revImg.addEventListener('mouseleave', function() {
+			  revImg.style.display = 'none';
+			});
+			revImg.addEventListener('mouseenter', function() {
+			  revImg.style.display = 'block';
+			});
+		}
+	}
 }
 
 </script>
