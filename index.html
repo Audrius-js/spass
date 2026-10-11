@@ -151,6 +151,7 @@
   Version: <i>as of <time id="version"></time></i>
 </footer>
 <script>
+const mobileDevice = (/iphone|ipod|android|ie|blackberry|fennec/i).test(navigator.userAgent);
 const appleDevice = (/apple/i).test(navigator.vendor);
 const phraseInput = document.getElementById('phrase'),
 swapInput = document.getElementById('swap'),
