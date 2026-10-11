@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strong password</title>
+  <style>
+  body {
+    margin: auto;
+    max-width: 66ch;
+    background: ghostwhite;
+  }
+  .background-text {
+    color: yellowgreen;
+    font-family: "Courier New", "Lucida Sans Typewriter", "Lucida Typewriter", "Lucida Console", monospace;
+    font-size: small;
+    word-break: break-all;
+    /*margin-top: -0.5em; /*at the top clip over text*/
+    /*height: 4.2em; /*at the bottom clip over text*/
+    margin-top: -0.2em; /*at the top clip over text*/
+    height: 5.2em; /*at the bottom clip over text*/
+    overflow: hidden;
+    user-select: none;
+  }
+  .background-text-gradient {
+    background-color: yellowgreen;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+  }
+  .gradient-up {
+    background-image: linear-gradient(yellowgreen, ghostwhite);
+  }
+  .gradient-down {
+    background-image: linear-gradient(to top, yellowgreen, ghostwhite);
+  }
+  .input-wrapper {
+    background: yellowgreen;
+    padding: 1rem 0.5rem;
+  }
+  .input-wrapper .input-title {
+    margin: 0;
+    text-align: center;
+  }
+  .input-wrapper .input-container {
+    /*white-space: nowrap; /*prevent wrap of span.input-length*/
+    margin-top: 0.7em;
+  }
+  .input-wrapper .input-label {
+    margin-left: 0.25em;
+  }
+  .input-wrapper .input-text {
+    /*width: calc(100% - 3ch); /*3ch for .input-length up to three digits*/
+    outline: none;
+    width: 100%;
+    box-sizing: border-box; /*Account for border width*/
+    font-size: 100%; /*For some reason by default font-size is not 100%*/
+  }
+  .input-wrapper .input-length {
+    color: ghostwhite;
+    float: right;
+    font-size: small;
+    user-select: none;
+  }
+  .input-wrapper .text-button {
+    cursor: pointer;
+    float: right;
+    margin: 0 1em;
+    user-select: none;
+  }
+  .prologue {
+    position: absolute;
+    top: 0;
+    color: darkgray;
+    margin: 0;
+    padding: 0.5rem 0.5rem;
+    /* text-align: center; */
+  }
+  footer {
+    color: #C0C0C0;
+    font-size: small;
+    padding: 2rem 0.5rem;
+  }
+  section {
+    padding: 0 0.5rem;
+  }
+  a {
+    color: inherit;
+  }
+  </style>
+</head>
+<body onload="setValues()">
+  <header>
+    <h3 class="prologue">Convert your <a href="https://nordpass.com/secure-password/" target="_blank" title="Check your password security">insecure password</a> to the super</h3>
+    <div class="background-text background-text-gradient gradient-down"></div>
+  </header>
+  <main>
+    <div class="input-wrapper">
+      <h1 class="input-title">Strong password</h1>
+      <div class="input-container">
+        <label for="phrase" class="input-label">1) Passphrase:</label><span id="phraseL" class="input-length" hidden></span><u id="repBtn" class="text-button" title="Replace passphrase with the password" hidden>rephrase</u><u id="maskBtn" class="text-button" title="Mask input characters" hidden>mask</u><br>
+        <input id="phrase" class="input-text" type="password">
+      </div>
+      <div class="input-container">
+        <label for="swap" class="input-label">2) Replace:</label><span id="swapL" class="input-length" hidden></span><br>
+        <input id="swap" class="input-text" type="password" placeholder="for example: a&s = yee!, e&& = (*_*)">
+      </div>
+      <div class="input-container">
+        <label for="message" class="input-label">3) Final passphrase:</label><span id="messageL" class="input-length" hidden></span><br>
+        <input id="message" class="input-text" type="password">
+      </div>
+      <div class="input-container">
+        <label for="password" class="input-label">4) Your password:</label><span id="passwordL" class="input-length" hidden></span><u id="copyBtn" class="text-button" title="Copy to clipboard" hidden>copy</u><u id="ABC123Btn" class="text-button" title="Letters and numbers only" hidden>abc123</u><br>
+        <input id="password" class="input-text" type="password">
+      </div>
+    </div>
+    <header>
+      <div class="background-text background-text-gradient gradient-up"></div>
+    </header>
+    <section>
+      <p><sup>1</sup>Choose something pronounceable and make it slightly different <a href="https://www.cloudflare.com/learning/bots/what-is-credential-stuffing/" target="_blank" title="Credential stuffing">for each account</a>. Note that, changing <a href="https://en.wikipedia.org/wiki/Avalanche_effect" target="_blank" title="Avalanche effect">just one letter</a> in the passphrase completely transforms the resulting password.</p>
+      <p><sup>2</sup>Mess-up your passphrase so that it has <a href="https://en.wikipedia.org/wiki/List_of_emoticons" target="_blank" title="Commonly known emojis">no regular words</a>. Order is important!</p>
+      <p><sup>3</sup>Make your passphrase from at least 5 random syllables or misspelled words. Mix in uppercases, symbols, numbers and rephrase button. Do not use <a href="https://www.wordreference.com/" target="_blank" title="Dictionary">dictionary words</a> or <a href="https://haveibeenpwned.com/Passwords" target="_blank" title="Passwords from public data breaches">leaked passwords</a> in your passphrase, because hackers can guess those <a href="https://www.hivesystems.com/blog/are-your-passwords-in-the-green" target="_blank" title="Time it takes a hacker to brute force your password">at lightning speed</a>.</p>
+      <p><sup>4</sup>Insert and replace several symbols in the password. Use your own rules.</p>
+      <p><sup>5</sup>For your security, no information leaves this page and no third-party JavaScript is used. You may download this page for offline use or even modify the algorithm to make it your own.</p>
+  </section>
+</main>
+<footer>
+  <address>Feedback: <u>audriusjavascript gmail com</u></address>
+  Stimulus: <a href="https://www.PayPal.Me/AudriusJS" target="_blank" title="Inject via PayPal">PayPal</a>
+  or <a href="https://liberapay.com/AudriusJS/donate" target="_blank" title="Inject via Liberapay">Liberapay</a>
+  or <u onclick="navigator.clipboard.writeText('1AZJtd5dY58bCUYP8S2aPFXDqeGQDZQQWH').then(function () {alert('1AZJtd5dY58bCUYP8S2aPFXDqeGQDZQQWH\n\nAudriusJS address for Bitcoins is copied to clipboard.')}, function () {prompt('AudriusJS address for Bitcoins is:', '1AZJtd5dY58bCUYP8S2aPFXDqeGQDZQQWH')})" title="Inject via blockchain" style="cursor: pointer">Bitcoins</u>
+  or <u onclick="navigator.clipboard.writeText('LT517044090102705543').then(function () {alert('LT517044090102705543\n\nAudrius IBAN is copied to clipboard.')}, function () {prompt('Audrius IBAN is:', 'LT517044090102705543')})" title="Direct injection to bank account" style="cursor: pointer">IBAN</u><br>
+  Version: <i>as of <time id="version"></time></i>
+</footer>
+<script>
+const appleDevice = (/apple/i).test(navigator.vendor);
+const phraseInput = document.getElementById('phrase'),
+swapInput = document.getElementById('swap'),
+messageInput = document.getElementById('message'),
+passwordInput = document.getElementById('password');
+const focusTime = 15 * 1000; //ms to show input fields as readable text
+const blurDelayTime = 200; //ms to delay some actions after blur
+const inputTime = 45 * 1000; //ms to keep text in input fields after blur
+let asyncToken = 0, focusTimeout, inputTimeout, blurDelay;
+
+async function generatePassword(e) {
+  const asyncID = ++asyncToken;
+  let message = messageInput.value; //Read the message
+  if (!e || (e.target.id == 'phrase') || (e.target.id == 'swap')) { //If generatePassword() was called anonymously or there was some input for passphrase or swap then produce the new message
+    message = phraseInput.value; //Set passphrase as the seed for message
+    if (message.length) { //If message is not empty
+      for (let swapPair of swapInput.value.split(',')) { //Make swaps in the message. Note: the order of swap pairs is important!
+        if (swapPair.includes('=')) {
+          swapPair = swapPair.split('=');
+          const swapTo = swapPair.slice(1).join('=').trim();
+          for (const swapFrom of swapPair[0].split('&')) { //Make swaps in the message. Note: the order of swap pairs is important!
+            message = message.split(swapFrom.trim()).join(swapTo);
+          }
+        }
+      }
+    }
+    messageInput.value = message; //Display the message
+    document.getElementById('messageL').innerText = message.length; //Display the length of the message
+  }
+  if (message.length) { //If message is not empty
+    let msgUint8 = new TextEncoder().encode(message); //Encode the message with UTF-8: https://encoding.spec.whatwg.org/#utf-8-encoder
+    msgUint8 = await crypto.subtle.digest('SHA-256', msgUint8); //https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+    // console.log(Array.from(new Uint8Array(msgUint8)).map(b => b.toString(16).padStart(2, '0')).join(''));
+    if (asyncID == asyncToken) { //If this call to async function is still relevant then transform hash to ASCII symbols
+      let password = Array.from(new Uint8Array(msgUint8)); //Convert array buffer to Uint8 array
+      password = password.map(Uint8 => Uint8.toString(2).padStart(8, '0')).join(''); //Convert Uint8 array to binary string where each array element has a fixed 8 bit length
+      password = password.match(/.{7}/g).map(sevenBits => parseInt(sevenBits, 2)); //Split binary string into array of groups of 7 bits and convert each array element to integer [0..127]. Note: the last 4 bits of the 256 bits hash are dropped, but since each integer will be encoded with 8 bits, not 7, the password will be 288 bits long.
+      password = password.map(x => (x < 32) ? x + 32 : (x == 127) ? 126 : x); //Convert code points of non-printable ASCII characters (0..31 and 127) to printable (for 0..31 add 32, 127 replace with 126). Note: addition of 32 is irreversible, therefore the hash of the message cannot be retrevied from the password without guessing.
+      password = password.map(c => String.fromCharCode(c)).join(''); //Convert integers to ASCII characters. Note: since there is some manipulation with the message hash bits (grouping into 7 bits (not 8), the last 4 bits are dropped, changed value if 7 bits < 32 or == 127) the hash of the password is not the same as the hash of the hash of the message.
+      passwordInput.value = password; //Display the password
+      document.getElementById('passwordL').innerText = password.length; //Display the length of the password
+      document.querySelectorAll('.text-button').forEach(btn => btn.removeAttribute('hidden')); //Show the buttons
+    }
+  }
+  else {
+    passwordInput.value = ''; //Display the password
+    document.getElementById('passwordL').innerText = 0; //Display the length of the password
+    document.querySelectorAll('.text-button').forEach(btn => btn.setAttribute('hidden', '')); //Hide the buttons
+  }
+}
+
+function inputonkeydown(e) {
+  const keyName = e.key.toLowerCase();
+  if (keyName == 'enter') { //If the enter key was pressed
+    e.preventDefault();
+    let sib, breakOnNext = false;
+    for (sib of document.querySelectorAll('input.input-text')) { //Find the target and break on next input sibling
+      if (breakOnNext) break;
+      breakOnNext = e.target.id == sib.id; //If target is found then break on next
+    }
+    if (e.target == sib) sib = document.querySelector('input.input-text'); //If target was the last item in the list then set focus on the first item
+    sib.focus();
+  }
+  else if (keyName == 'escape') { //If the ESC key was pressed
+    e.preventDefault();
+    e.target.blur(); //Focus out
+  }
+  else if ((keyName == 'c') && e.ctrlKey && !e.shiftKey && !e.altKey && !document.getSelection().toString()) { //If the ctrl+c key was pressed and Shift and Alt keys are not pressed and no text is selected
+    document.getElementById('copyBtn').dispatchEvent(new Event('click')); //Copy the password
+    e.target.blur(); //Focus out
+  }
+  else if ((keyName == 'r') && !e.ctrlKey && !e.shiftKey && e.altKey) { //If the alt+r key was pressed and Ctrl and Shift keys are not pressed
+    document.getElementById('repBtn').dispatchEvent(new Event('click')); //Replace passphrase with password
+  }
+  else if ((keyName == 'a') && !e.ctrlKey && !e.shiftKey && e.altKey) { //If the alt+a key was pressed and Ctrl and Shift keys are not pressed
+    document.getElementById('ABC123Btn').dispatchEvent(new Event('click')); //Change password to letters and numbers only
+  }
+  else if ((keyName == 'm') && !e.ctrlKey && !e.shiftKey && e.altKey) { //If the alt+m key was pressed and Ctrl and Shift keys are not pressed
+    document.getElementById('maskBtn').dispatchEvent(new Event('click')); //Change password to letters and numbers only
+    const inputType = (document.querySelector('#maskBtn').textContent == 'mask') ? 'text' : 'password';
+    for (const inputTxt of document.querySelectorAll('input.input-text')) inputTxt.type = inputType;
+  }
+}
+
+function setValues() {
+  for (const bgText of document.querySelectorAll('.background-text')) bgText.innerText = "0110".repeat(100);
+  document.getElementById('version').innerHTML = new Date(document.lastModified).toISOString().slice(0, 10); //Set version
+  for (const inputTxt of document.querySelectorAll('input.input-text')) { //Add events for inputs
+    inputTxt.addEventListener('input', ({target}) => { //On user input measure the length of the inputs and set focus timeout
+      clearTimeout(focusTimeout); //Cancel previous focus timeout
+      focusTimeout = setTimeout(() => target.blur(), focusTime); //Blur input after some period of time
+      document.getElementById(target.id + 'L').innerText = target.value.length;
+    });
+    inputTxt.addEventListener('focus', ({target}) => { //On focus show text of all inputs and also show lengths of inputs
+      clearTimeout(blurDelay); //Cancel blur delay timeout
+      clearTimeout(inputTimeout); //Cancel previous input timeout
+      focusTimeout = setTimeout(() => target.blur(), focusTime); //Blur input after some period of time
+      if (document.querySelector('#maskBtn').textContent == 'mask') for (const inputTxt of document.querySelectorAll('input.input-text')) inputTxt.type = 'text';
+      for (const inputLengthEl of document.querySelectorAll('.input-length')) inputLengthEl.removeAttribute('hidden');
+      if (!appleDevice && (window.pageYOffset == 0)) document.querySelector('.input-wrapper').scrollIntoView(); //If not apple device and page is at the top position then scroll the top of the '.input-wrapper' to the top of the visible area. Note: '.input-wrapper' is not scrolled on apple safari because it automatically scrolls focused input field to the middle of the visible screen 
+    });
+    inputTxt.addEventListener('blur', () => { //On blur hide text of all inputs and also hide lengths of inputs
+      clearTimeout(focusTimeout); //Cancel focus timeout
+      inputTimeout = setTimeout(() => location.reload(), inputTime); //Set timeout for text in input fields
+      blurDelay = setTimeout(() => {
+        for (const inputTxt of document.querySelectorAll('input.input-text')) inputTxt.type = 'password';
+        for (const inputLengthEl of document.querySelectorAll('.input-length')) inputLengthEl.setAttribute('hidden', '');
+      }, blurDelayTime); //Set timeout for blur actions to avoid flickering in case of refocus
+    });
+    inputTxt.addEventListener('keydown', inputonkeydown); //Focus next input on enter and blur on escape
+    if (inputTxt.id != 'password') inputTxt.addEventListener('input', generatePassword); //If it is not the input of password then generate password on user input
+  }
+  for (const inputLengthEl of document.querySelectorAll('.input-length')) inputLengthEl.innerText = document.getElementById(inputLengthEl.id.slice(0, -1)).value.length; //Measure the length of the inputs
+  document.querySelector('.prologue').style.top = ((document.querySelector('.background-text').offsetHeight - document.querySelector('.prologue').offsetHeight) / 2) + "px"; //Center '.prologue' vertically over '.background-text'
+
+  document.querySelector('#copyBtn').addEventListener('click', () => {
+    if (passwordInput.value) navigator.clipboard.writeText(passwordInput.value);
+  }); //onclick="if (passwordInput.value) navigator.clipboard.writeText(passwordInput.value)"
+
+  document.querySelector('#ABC123Btn').addEventListener('click', () => {
+    if (passwordInput.value) { //If password is not empty
+      passwordInput.value = passwordInput.value
+      .split('') //Split into array of symbols
+      .map(c => c.charCodeAt()) //Convert symbols to numbers
+      .map(x => { while ((x < 48) || (x > 122) || ((x > 57) && (x < 65)) || ((x > 90) && (x < 97))) x = (x > 122) ? x - 20 : x + 20; return x; }) //Force numbers to fall into range of 0-9, A-Z or a-z codes
+      .map(c => String.fromCharCode(c)).join(''); //Convert numbers to symbols
+      if (!document.activeElement.classList.contains('input-text')) passwordInput.focus(); //If no input element has focus then set focus to password to see the change
+    }
+  });
+
+  document.querySelector('#repBtn').addEventListener('click', () => {
+    if (passwordInput.value) { //If password is not empty
+      phraseInput.value = passwordInput.value;
+      phraseInput.focus();
+      phraseInput.dispatchEvent(new Event('input'));
+    }
+  });
+
+  document.querySelector('#maskBtn').addEventListener('click', ({target}) => {
+    target.textContent = (target.textContent == 'mask') ? 'unmask' : 'mask';
+  });
+
+  phraseInput.focus(); //Note: autofocus not always invokes 'focus' event on page load
+}
+
+</script>
+
+</body>
+</html>
